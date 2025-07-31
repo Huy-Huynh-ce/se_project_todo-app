@@ -1,7 +1,5 @@
 class Todo{
     constructor(data, selector) {
-        // console.log(data);
-        // console.log(selector);
         this._data = data;
         this._templateElement = document.querySelector(selector);
     }
@@ -18,7 +16,7 @@ class Todo{
   }
     }
 
-    _setEventListener(){
+    _setEventListeners(){
         this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
         this._todoDeleteBtn.addEventListener("click", ()=>{
             this._todoElement.remove();
@@ -50,7 +48,7 @@ class Todo{
     todoNameEl.textContent = this._data.name;
     
     this._generateCheckBoxEl();
-    this._setEventListener();
+    this._setEventListeners();
     this._setDate();
 
     return this._todoElement;
