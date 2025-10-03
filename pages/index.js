@@ -1,8 +1,9 @@
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
-import FormValidator from '../components/FormValidator.js';
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -10,7 +11,14 @@ const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
- 
+const section = new Section({
+  items: initialTodos,
+  renderer: (item) => {
+    const todo = generateTodo(item);
+    return todo;
+  },
+  containerSelector: ".todos__list",
+});
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
@@ -23,13 +31,8 @@ const closeModal = (modal) => {
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
-  
-  return todoElement;
-};
 
-const renderTodo = (item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
+  return todoElement;
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -49,18 +52,15 @@ addTodoForm.addEventListener("submit", (evt) => {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
   const id = uuidv4();
   const values = { name, date, id };
-  renderTodo(values);
-  
+  section.addItem(values);
+
   newTodoFormValidator.resetValidation();
   addTodoForm.reset();
 
   closeModal(addTodoPopup);
-  
 });
 
-initialTodos.forEach((item) => {
-  renderTodo(item);
-});
+section.renderItems();
 
-const newTodoFormValidator =  new FormValidator(validationConfig, addTodoForm );
+const newTodoFormValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoFormValidator.enableValidation();
