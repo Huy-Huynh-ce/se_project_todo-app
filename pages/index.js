@@ -4,11 +4,12 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
+const addTodoPopupEl = document.querySelector("#add-todo-popup");
+const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
+const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
 const section = new Section({
@@ -20,13 +21,25 @@ const section = new Section({
   containerSelector: ".todos__list",
 });
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
+const addTodoPopup = new PopupWithForm({
+  popupSelector: "#add-todo-popup",
+  handleFormSubmit: (inputValues) => {
+    const { name, date: dateInput } = inputValues;
 
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-};
+    const date = new Date(dateInput);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    const id = uuidv4();
+    const values = { name, date, id };
+    section.addItem(values);
+
+    newTodoFormValidator.resetValidation();
+    addTodoForm.reset();
+
+    addTodoPopup.close();
+  },
+});
+
+addTodoPopup.setEventListeners();
 
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
@@ -36,28 +49,7 @@ const generateTodo = (data) => {
 };
 
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
-});
-
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
-});
-
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
-
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  const id = uuidv4();
-  const values = { name, date, id };
-  section.addItem(values);
-
-  newTodoFormValidator.resetValidation();
-  addTodoForm.reset();
-
-  closeModal(addTodoPopup);
+  addTodoPopup.open();
 });
 
 section.renderItems();
