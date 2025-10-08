@@ -1,14 +1,20 @@
 # Simple Todo App
 
-Give a brief description of the project here. Feel free to give it a different name.
+straight forward, easy to use Todo app for everyday use. Shopping, gym work-out, homework, choirs,..., just toname a few.
 
 ## Functionality
 
-Give a more detailed explanation of the project and its functionality.
+This Todo application is a vanilla JavaScript, modular web app built with ES6 classes and modules to demonstrate core frontend engineering skills without relying on heavy frameworks. It provides a clean, user-friendly interface for managing tasks efficiently, with support for due dates, completion status, and dynamic counters..
 
 ## Technology
 
-Give a description of the technologies and techniques used. Pictures, GIFs, or screenshots that detail the project features are recommended.
+-Add new todos via a popup form with form validation
+-Mark todos as completed using a checkbox
+-Delete todos instantly
+-Live counter displaying
+-Date support with formatted due dates
+-Form validation using a custom FormValidator class
+-Modular file structure with ES6 modules
 
 ## Deployment
 

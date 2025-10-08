@@ -12,13 +12,12 @@ class TodoCounter {
   }
 
   updateTotal(increment) {
-    console.log("updateTotal called with:", increment);
     this._total += increment ? 1 : -1;
     this._updateText();
   }
 
   _updateText() {
-    this._element.textContent = `showing ${this.completed} out of ${this._total} conpleted`;
+    this._element.textContent = `showing ${this._completed} out of ${this._total} conpleted`;
   }
 }
 
